@@ -6,6 +6,8 @@ import Nav from './Nav';
 import Auth from './Auth/Auth';
 import Callback from './Callback';
 import { History, Location, LocationState } from 'history';
+import Public from './Public';
+import Private from './Private';
 
 interface Props {
   history: History<LocationState>;
@@ -31,6 +33,15 @@ function App(props: Props) {
         <Route path='/' exact render={ props => <Home auth={auth} {...props} /> } />
         <Route path='/callback' exact render={ props => <Callback auth={auth} {...props} /> } />
         <Route path='/profile' render={ props => auth.isAuthenticated() ? <Profile auth={auth} {...props} /> : <Redirect to='/' />} />
+        <Route path='/public' exact component={Public} />
+        <Route
+          path='/private'
+          render={ props => 
+            auth.isAuthenticated() ?
+            <Private auth={auth} {...props} /> :
+            <>{auth.login()}</>
+          }
+        />
       </div>
     </>
   );
