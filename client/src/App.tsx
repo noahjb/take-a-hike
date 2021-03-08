@@ -8,6 +8,7 @@ import Callback from './Callback';
 import { History, Location, LocationState } from 'history';
 import Public from './Public';
 import Private from './Private';
+import Hikes from './Hikes';
 
 interface Props {
   history: History<LocationState>;
@@ -39,6 +40,15 @@ function App(props: Props) {
           render={ props => 
             auth.isAuthenticated() ?
             <Private auth={auth} {...props} /> :
+            <>{auth.login()}</>
+          }
+        />
+        <Route
+          path='/hike'
+          render={ props => 
+            auth.isAuthenticated() &&
+            auth.userHasScopes(['read:hikes']) ?
+            <Hikes auth={auth} {...props} /> :
             <>{auth.login()}</>
           }
         />

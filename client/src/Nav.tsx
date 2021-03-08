@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Nav = (props: Props) => {
-    const {isAuthenticated, login, logout} = props.auth;
+    const {isAuthenticated, login, logout, userHasScopes} = props.auth;
     return (
         <nav>
             <ul>
@@ -16,6 +16,10 @@ const Nav = (props: Props) => {
             <li><Link to='/public'>Public</Link></li>
             {isAuthenticated() && (
             <li><Link to='/private'>Private</Link></li>
+            )}
+            {isAuthenticated() &&
+            userHasScopes(['read:hikes']) && (
+            <li><Link to='/hike'>Hikes</Link></li>
             )}
             <li>
                 <button onClick={isAuthenticated() ? logout : login}>

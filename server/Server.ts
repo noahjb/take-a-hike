@@ -3,6 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import jwt from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
+import checkScope from 'express-jwt-authz';
 
 const pathToEnv = path.join(__dirname, '/../../client/.env');
 dotenv.config({ path: pathToEnv});
@@ -46,6 +47,15 @@ export class Server {
         this.app.get('/private', checkJwt, (req: Request, res: Response) => {
             res.json({
                 message: 'Hello from private API'
+            });
+        });
+
+        this.app.get('/hike', checkJwt, checkScope(['read:hikes']), (req: Request, res: Response) => {
+            res.json({
+                hikes: [
+                    {id: 1, title: 'Mt. Olympus'},
+                    {id: 2, title: 'Great Sand Dunes'}
+                ]
             });
         });
 

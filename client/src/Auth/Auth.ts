@@ -5,6 +5,7 @@ class Auth {
     history: History<LocationState>;
     auth0: auth0.WebAuth;
     userProfile: auth0.Auth0UserProfile | null;
+    requestedScopes = 'openid profile email read:hikes';
     constructor(history: History) {
         this.history = history;
         this.userProfile = null;
@@ -14,7 +15,7 @@ class Auth {
             redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL,
             audience: process.env.REACT_APP_AUTH0_AUDIENCE,
             responseType: 'token id_token',
-            scope: 'openid profile email'
+            scope: this.requestedScopes
         });
     }
 
@@ -39,9 +40,16 @@ class Auth {
         // set access token expiration time
         const expiresAt = JSON.stringify(authResult.expiresIn! * 1000 + new Date().getTime());
 
+        // If there is a value on the `scope` param from the authResult,
+        // use it to set scopes in the session for the user. Otherwise
+        // use the scopes as requested. If no scopes were requested,
+        // set it to nothing
+        const scopes = authResult.scope || this.requestedScopes || '';
+
         localStorage.setItem('access_token', authResult.accessToken!);
         localStorage.setItem('id_token', authResult.idToken!);
         localStorage.setItem('expires_at', expiresAt);
+        localStorage.setItem('scopes', JSON.stringify(scopes));
     };
 
     isAuthenticated = () : boolean => {
@@ -53,6 +61,7 @@ class Auth {
         localStorage.removeItem('access_token');
         localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
+        localStorage.removeItem('scopes');
         this.userProfile = null;
         this.auth0.logout({
             clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
@@ -80,6 +89,11 @@ class Auth {
 
             cb(profile, err);
         });
+    }
+
+    userHasScopes = (scopes: string[]) => {
+        const grantedScopes = JSON.parse(localStorage.getItem('scopes') || '').split(' ');
+        return scopes.every(scope => grantedScopes.includes(scope));
     }
 }
 
