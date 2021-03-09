@@ -26,6 +26,19 @@ function Hikes(props: Props) {
         }).catch((err) => {
             console.log(err);
         });
+
+        fetch('/admin', {
+            headers: { Authorization: `Bearer ${props.auth.getAccessToken()}`}
+        }).then((response: Response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok');
+        }).then((response) => {
+            console.log(response);
+        }).catch((err) => {
+            console.log(err);
+        });
     }, [props.auth]);
 
     return (

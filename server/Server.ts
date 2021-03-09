@@ -5,6 +5,10 @@ import jwt from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
 import checkScope from 'express-jwt-authz';
 
+interface RequestWithRoles extends Request {
+    user: any;
+}
+
 const pathToEnv = path.join(__dirname, '/../../client/.env');
 dotenv.config({ path: pathToEnv});
 
@@ -27,6 +31,17 @@ const checkJwt = jwt({
     // This must match the algorithm selected in the Auth0 dashboard
     algorithms: ['RS256']
 });
+
+const checkRole = (role: string) => {
+    return function(req: RequestWithRoles, res: Response, next: Function) {
+        const assignedRoles = req.user['http://localhost:3000/roles'];
+        if (Array.isArray(assignedRoles) && assignedRoles.includes(role)) {
+            return next();
+        } else {
+            return res.status(401).send('Insufficient permissions');
+        }
+    }
+};
 
 export class Server {
     private app: Express;
@@ -56,6 +71,12 @@ export class Server {
                     {id: 1, title: 'Mt. Olympus'},
                     {id: 2, title: 'Great Sand Dunes'}
                 ]
+            });
+        });
+
+        this.app.get('/admin', checkJwt, checkRole('admin'), (req: Request, res: Response) => {
+            res.json({
+                message: 'Hello from an admin API'
             });
         });
 
