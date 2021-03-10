@@ -1,6 +1,8 @@
 import auth0 from 'auth0-js';
 import { History, LocationState } from 'history';
 
+const REDIRECT_ON_LOGIN = 'redirect_on_login';
+
 class Auth {
     history: History<LocationState>;
     auth0: auth0.WebAuth;
@@ -20,6 +22,12 @@ class Auth {
     }
 
     login = () => {
+        // Capture where in the app we were prior to authentication
+        // so that the user isn't always re-routed to the home page
+        localStorage.setItem(
+            REDIRECT_ON_LOGIN,
+            JSON.stringify(this.history.location)
+        );
         this.auth0.authorize();
     };
 
@@ -27,12 +35,15 @@ class Auth {
         this.auth0.parseHash((err, authResult) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
                 this.setSession(authResult);
-                this.history.push('/');
+                const locationFromStorage = localStorage.getItem(REDIRECT_ON_LOGIN);
+                const redirectLocation = locationFromStorage ? JSON.parse(locationFromStorage) : '/';
+                this.history.push(redirectLocation);
             } else if (err) {
                 this.history.push('/');
                 alert(`Error: ${err.error}. Check the console for further details.`);
                 console.log(err);
             }
+            localStorage.removeItem(REDIRECT_ON_LOGIN);
         });
     };
 

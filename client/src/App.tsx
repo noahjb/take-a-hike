@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Home from './Home';
 import Profile from './Profile';
 import Nav from './Nav';
@@ -9,6 +9,7 @@ import { History, Location, LocationState } from 'history';
 import Public from './Public';
 import Private from './Private';
 import Hikes from './Hikes';
+import PrivateRoute from './PrivateRoute';
 
 interface Props {
   history: History<LocationState>;
@@ -33,24 +34,22 @@ function App(props: Props) {
       <div className='body'>
         <Route path='/' exact render={ props => <Home auth={auth} {...props} /> } />
         <Route path='/callback' exact render={ props => <Callback auth={auth} {...props} /> } />
-        <Route path='/profile' render={ props => auth.isAuthenticated() ? <Profile auth={auth} {...props} /> : <Redirect to='/' />} />
-        <Route path='/public' exact component={Public} />
-        <Route
-          path='/private'
-          render={ props => 
-            auth.isAuthenticated() ?
-            <Private auth={auth} {...props} /> :
-            <>{auth.login()}</>
-          }
+        <PrivateRoute
+          path='/profile'
+          component={Profile}
+          auth={auth}
         />
-        <Route
+        <Route path='/public' exact component={Public} />
+        <PrivateRoute
+          path='/private'
+          component={Private}
+          auth={auth}
+        />
+        <PrivateRoute
           path='/hike'
-          render={ props => 
-            auth.isAuthenticated() &&
-            auth.userHasScopes(['read:hikes']) ?
-            <Hikes auth={auth} {...props} /> :
-            <>{auth.login()}</>
-          }
+          component={Hikes}
+          auth={auth}
+          scopes={['read:hikes']}
         />
       </div>
     </>
