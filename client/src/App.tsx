@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
 import Home from './Home';
 import Profile from './Profile';
 import Nav from './Nav';
@@ -10,6 +9,8 @@ import Public from './Public';
 import Private from './Private';
 import Hikes from './Hikes';
 import PrivateRoute from './PrivateRoute';
+import AuthContext from './AuthContext';
+import PublicRoute from './PublicRoute';
 
 interface Props {
   history: History<LocationState>;
@@ -29,30 +30,17 @@ function App(props: Props) {
   }, [msg]);
 
   return (
-    <>
+    <AuthContext.Provider value={auth}>
       <Nav auth={auth} />
       <div className='body'>
-        <Route path='/' exact render={ props => <Home auth={auth} {...props} /> } />
-        <Route path='/callback' exact render={ props => <Callback auth={auth} {...props} /> } />
-        <PrivateRoute
-          path='/profile'
-          component={Profile}
-          auth={auth}
-        />
-        <Route path='/public' exact component={Public} />
-        <PrivateRoute
-          path='/private'
-          component={Private}
-          auth={auth}
-        />
-        <PrivateRoute
-          path='/hike'
-          component={Hikes}
-          auth={auth}
-          scopes={['read:hikes']}
-        />
+        <PublicRoute path='/' exact component={Home} />
+        <PublicRoute path='/callback' component={Callback} />
+        <PrivateRoute path='/profile' component={Profile} />
+        <PublicRoute path='/public' exact component={Public} />
+        <PrivateRoute path='/private' component={Private} />
+        <PrivateRoute path='/hike' component={Hikes} scopes={['read:hikes']} />
       </div>
-    </>
+    </AuthContext.Provider>
   );
 }
 

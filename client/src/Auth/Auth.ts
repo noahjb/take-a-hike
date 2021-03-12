@@ -4,11 +4,11 @@ import { History, LocationState } from 'history';
 const REDIRECT_ON_LOGIN = 'redirect_on_login';
 
 class Auth {
-    history: History<LocationState>;
+    history: History<LocationState> | undefined;
     auth0: auth0.WebAuth;
     userProfile: auth0.Auth0UserProfile | null;
     requestedScopes = 'openid profile email read:hikes';
-    constructor(history: History) {
+    constructor(history?: History) {
         this.history = history;
         this.userProfile = null;
         this.auth0 = new auth0.WebAuth({
@@ -26,7 +26,7 @@ class Auth {
         // so that the user isn't always re-routed to the home page
         localStorage.setItem(
             REDIRECT_ON_LOGIN,
-            JSON.stringify(this.history.location)
+            JSON.stringify(this.history?.location)
         );
         this.auth0.authorize();
     };
@@ -37,9 +37,9 @@ class Auth {
                 this.setSession(authResult);
                 const locationFromStorage = localStorage.getItem(REDIRECT_ON_LOGIN);
                 const redirectLocation = locationFromStorage ? JSON.parse(locationFromStorage) : '/';
-                this.history.push(redirectLocation);
+                this.history?.push(redirectLocation);
             } else if (err) {
-                this.history.push('/');
+                this.history?.push('/');
                 alert(`Error: ${err.error}. Check the console for further details.`);
                 console.log(err);
             }

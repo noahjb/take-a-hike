@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, RouteProps } from 'react-router-dom';
-import Auth from './Auth/Auth';
+import AuthContext from './AuthContext';
 
 interface PrivateRouteProps extends RouteProps {
-    auth: Auth,
     component: React.ComponentType<any>
     scopes?: string[]
 }
 
-const PrivateRoute = ({component: Component, auth, scopes, ...rest}: PrivateRouteProps) => {
+const PrivateRoute = ({component: Component, scopes, ...rest}: PrivateRouteProps) => {
+    const auth = React.useContext(AuthContext);
     return (
         <Route
             {...rest}
@@ -35,7 +35,7 @@ const PrivateRoute = ({component: Component, auth, scopes, ...rest}: PrivateRout
                 }
             }}
         />
-    )
-}
+    );
+};
 
-export default PrivateRoute
+export default PrivateRoute;
