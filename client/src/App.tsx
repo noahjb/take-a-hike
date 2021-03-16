@@ -20,6 +20,7 @@ interface Props {
 function App(props: Props) {
   let [msg, setMsg] = useState('Loading');
   let [auth, setAuth] = useState(new Auth(props.history));
+  let [isTokenRenewalComplete, setIsTokenRenewalComplete] = useState(false);
   
   useEffect(() => {
     fetch('/api')
@@ -28,6 +29,15 @@ function App(props: Props) {
       console.log(`Message from server: ${msg}`);
     });
   }, [msg]);
+
+  useEffect(() => {
+    console.log('renewing token');
+    auth.renewToken(() => setIsTokenRenewalComplete(true));
+  }, []);
+
+  if (!isTokenRenewalComplete) {
+    return <>'Loading...'</>;
+  }
 
   return (
     <AuthContext.Provider value={auth}>

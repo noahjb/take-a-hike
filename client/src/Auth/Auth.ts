@@ -3,6 +3,11 @@ import { History, LocationState } from 'history';
 
 const REDIRECT_ON_LOGIN = 'redirect_on_login';
 
+let idToken = null;
+let accessToken: string | undefined;
+let scopesStr: string = '';
+let expiresAt: number = 0;
+
 class Auth {
     history: History<LocationState> | undefined;
     auth0: auth0.WebAuth;
@@ -49,31 +54,25 @@ class Auth {
 
     setSession = (authResult: auth0.Auth0DecodedHash) => {
         // set access token expiration time
-        const expiresAt = JSON.stringify(authResult.expiresIn! * 1000 + new Date().getTime());
+        expiresAt = authResult.expiresIn! * 1000 + new Date().getTime();
 
         // If there is a value on the `scope` param from the authResult,
         // use it to set scopes in the session for the user. Otherwise
         // use the scopes as requested. If no scopes were requested,
         // set it to nothing
-        const scopes = authResult.scope || this.requestedScopes || '';
+        scopesStr = authResult.scope || this.requestedScopes || '';
 
-        localStorage.setItem('access_token', authResult.accessToken!);
-        localStorage.setItem('id_token', authResult.idToken!);
-        localStorage.setItem('expires_at', expiresAt);
-        localStorage.setItem('scopes', JSON.stringify(scopes));
+        accessToken = authResult.accessToken;
+        idToken = authResult.idToken;
+
+        this.scheduleTokenRenewal();
     };
 
     isAuthenticated = () : boolean => {
-        const expiresAt = localStorage.getItem('expires_at');
-        return expiresAt ? new Date().getTime() < JSON.parse(expiresAt) : false;
+        return new Date().getTime() < new Date(expiresAt).getTime();
     };
 
     logout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('id_token');
-        localStorage.removeItem('expires_at');
-        localStorage.removeItem('scopes');
-        this.userProfile = null;
         this.auth0.logout({
             clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
             returnTo: 'http://localhost:3000'
@@ -81,7 +80,6 @@ class Auth {
     };
 
     getAccessToken = () => {
-        const accessToken = localStorage.getItem('access_token');
         if (!accessToken) {
             throw new Error('No access token found');
         }
@@ -103,8 +101,28 @@ class Auth {
     }
 
     userHasScopes = (scopes: string[]) => {
-        const grantedScopes = JSON.parse(localStorage.getItem('scopes') || '').split(' ');
+        const grantedScopes = (scopesStr || '').split(' ');
         return scopes.every(scope => grantedScopes.includes(scope));
+    }
+
+    renewToken = (cb?: (err: auth0.Auth0Error | null, result: any) => void) => {
+        this.auth0.checkSession({}, (err, result) => {
+            if (err) {
+                console.log(`Error: ${err.error} - ${err.errorDescription}.`);
+            } else {
+                this.setSession(result);
+            }
+            if (cb) {
+                cb(err, result);
+            }
+        })
+    }
+
+    scheduleTokenRenewal = () => {
+        const delay = expiresAt - Date.now();
+        if (delay > 0) {
+            setTimeout(() => this.renewToken(), delay);
+        }
     }
 }
 
