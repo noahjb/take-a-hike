@@ -63,6 +63,7 @@ class Auth {
         scopesStr = authResult.scope || this.requestedScopes || '';
 
         accessToken = authResult.accessToken;
+        // eslint-disable-next-line
         idToken = authResult.idToken;
 
         this.scheduleTokenRenewal();

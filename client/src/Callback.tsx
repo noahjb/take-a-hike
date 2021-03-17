@@ -15,7 +15,7 @@ const Callback = (props: Props) => {
         } else {
             throw new Error('Invalid callback URL');
         }
-    }, []);
+    });
 
     return (
         <h1>

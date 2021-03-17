@@ -19,19 +19,23 @@ const Profile = (props: Props) => {
 
     React.useEffect(() => {
         loadUserProfile();
-    }, []);
+    });
 
     if (!profile) {
         return null;
     }
 
     return (
-        <>
-            <h1>Profile</h1>
-            <p>{profile.nickname}</p>
-            <img src={profile.picture} alt='profile picture' style={{ maxWidth: 50, maxHeight: 50}} />
-            <pre>{JSON.stringify(profile, null, 2)}</pre>
-        </>
+        !error
+        ?
+            <>
+                <h1>Profile</h1>
+                <p>{profile.nickname}</p>
+                <img src={profile.picture} alt='profile' style={{ maxWidth: 50, maxHeight: 50}} />
+                <pre>{JSON.stringify(profile, null, 2)}</pre>
+            </>
+        :
+            <p>{error}</p>
     )
 }
 
