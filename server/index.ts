@@ -1,12 +1,15 @@
-import { Server } from './Server';
-import express, { Request, Response } from 'express';
-import path from 'path';
+import express from 'express';
+import loaders from './loaders';
 
-const app = express();
-app.set("port", process.env.PORT || 4000);
+async function startServer() {
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '..', 'client/build')));
+  const app = express();
 
-const server = new Server(app);
-server.start(app.get("port"));
+  await loaders({ expressApp: app });
+
+  app.listen(app.get("port"), () => {
+    console.log(`Server listening on port ${app.get("port")}`);
+  });
+}
+
+startServer();

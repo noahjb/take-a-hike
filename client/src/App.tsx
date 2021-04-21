@@ -5,9 +5,10 @@ import './App.css';
 function App() {
   let [msg, setMsg] = useState('Loading');
   
-  fetch('/api')
+  fetch('/api/hikes')
   .then(async res => {
-    setMsg(await res.text());
+    const data = await res.json();
+    setMsg(data.name);
   });
 
   return (
