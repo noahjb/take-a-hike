@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/noahjb/take-a-hike#readme",
   "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/jest": "^26.0.22",
     "concurrently": "^6.0.2"
   }
 }
