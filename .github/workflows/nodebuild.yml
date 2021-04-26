@@ -27,6 +27,10 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v2
+      - name: Install root dependencies
+        run: yarn
+      - name: Install server dependencies
+        run: cd server && yarn
       - name: Server unit tests
         run: yarn test:server
   deploy:
