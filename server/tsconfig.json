@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "baseUrl": "./server/",
+        "baseUrl": "./",
         "outDir": "build",
         "target": "es6",
         "moduleResolution": "node",
@@ -12,7 +12,7 @@
         "strict": true
     },
     "include": [
-        "server/**/**.ts",
-        "server/**/**.tsx"
+        "**/**.ts",
+        "**/**.tsx"
     ]
 }
