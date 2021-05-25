@@ -1,0 +1,7 @@
+@hikesEndpoint = http://localhost:4000/api/hikes
+
+### GET All Hikes
+GET {{hikesEndpoint}}
+
+### GET Hike by ID
+GET {{hikesEndpoint}}/2
