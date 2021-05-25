@@ -7,8 +7,8 @@ function App() {
   
   fetch('/api/hikes')
   .then(async res => {
-    const data = await res.json();
-    setMsg(data.name);
+    const response = await res.json();
+    setMsg(response.data[0].title);
   });
 
   return (
