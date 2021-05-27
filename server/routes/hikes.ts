@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { IHikePayload } from 'interfaces/IHike';
+import { IHikePayload } from '../interfaces/IHike';
 import HikesService from '../services/HikesService';
 const route = Router();
 
@@ -51,7 +51,6 @@ export default (app: Router) => {
       });
     })
     .catch(err => {
-      console.log('Got the error in the route');
       next(err);
     });
   });

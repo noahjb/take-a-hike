@@ -1,4 +1,4 @@
-import { IHikesProvider } from 'interfaces/IHikesProvider';
+import { IHikesProvider } from '../interfaces/IHikesProvider';
 import { DiscHikesProvider } from './DiscHikesProvider';
 
 class HikesModel {

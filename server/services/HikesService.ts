@@ -1,4 +1,4 @@
-import { IHike, IHikePayload } from 'interfaces/IHike';
+import { IHike, IHikePayload } from '../interfaces/IHike';
 import { HikesModel } from '../models/HikesModel';
 
 export default class HikesService {
