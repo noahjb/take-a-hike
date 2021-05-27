@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import routes from '../routes';
 import config from '../config';
+import { errorHelper } from '../helpers/errorHelper';
 
 export default async ({ app }: { app: express.Application }) => {
     app.set("port", process.env.PORT || 4000);
@@ -15,6 +16,11 @@ export default async ({ app }: { app: express.Application }) => {
     app.get('*', (req: Request, res: Response) => {
         res.sendFile(path.join(__dirname, '..', '..', 'client', 'build', 'index.html'));
     });
+
+    // Error handlers
+    app.use(errorHelper.logErrorsToConsole);
+    app.use(errorHelper.clientErrorHandler);
+    app.use(errorHelper.errorHandler); // Catch-all exception handler (must go last)
 
     return app;
 };

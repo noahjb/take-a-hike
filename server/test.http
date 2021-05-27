@@ -4,4 +4,4 @@
 GET {{hikesEndpoint}}
 
 ### GET Hike by ID
-GET {{hikesEndpoint}}/2
+GET {{hikesEndpoint}}/9

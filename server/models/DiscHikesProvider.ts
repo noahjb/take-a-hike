@@ -1,6 +1,7 @@
+import { HikeNotFoundError } from '../errors/NotFound';
 import * as fs from 'fs';
-import { IHike } from 'interfaces/IHike';
-import { IHikesProvider } from 'interfaces/IHikesProvider';
+import { IHike } from '../interfaces/IHike';
+import { IHikesProvider } from '../interfaces/IHikesProvider';
 
 const FILE_NAME = './models/hikes.json';
 
@@ -28,7 +29,7 @@ const DiscHikesProvider: IHikesProvider = {
                     if (hike) {
                         resolve(hike);
                     } else {
-                        reject(new Error(`No hike found with ID ${id}`));
+                        reject(new HikeNotFoundError(id));
                     }
                 }
             });
