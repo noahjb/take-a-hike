@@ -1,8 +1,7 @@
-import { Router, Request, Response } from 'express';
-import { param, validationResult } from 'express-validator';
+import { Router, Request, Response, NextFunction } from 'express';
 import { IHikePayload } from '../interfaces/IHike';
 import HikesService from '../services/HikesService';
-import { ValidationError } from '../errors/ValidationError';
+import { HikesValidator } from '../errors/HikesValidator';
 const route = Router();
 
 export default (app: Router) => {
@@ -43,26 +42,20 @@ export default (app: Router) => {
 
   // GET Single hike
   route.get('/:id',
-    param('id').isUUID(),
-    (req: Request, res: Response, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        const firstError = errors.array()[0];
-        const errVal = (firstError.value) ? `: ${firstError.value}` : '';
-        throw new ValidationError(firstError.msg + errVal);
-      }
-
-    new HikesService().getById(req.params.id)
-    .then((hike) => {
-      res.status(200).json({
-        status: 200,
-        statusText: 'OK',
-        message: `Found hike ${req.params.id}`,
-        data: hike
+    HikesValidator.getHikeById,
+    (req: Request, res: Response, next: NextFunction) => {
+      new HikesService().getById(req.params.id)
+      .then((hike) => {
+        res.status(200).json({
+          status: 200,
+          statusText: 'OK',
+          message: `Found hike ${req.params.id}`,
+          data: hike
+        });
+      })
+      .catch(err => {
+        next(err);
       });
-    })
-    .catch(err => {
-      next(err);
-    });
-  });
+    }
+  );
 };

@@ -3,10 +3,12 @@ import { Request, Response } from "express";
 import { ValidationError } from "./ValidationError";
 
 const errorHelper = {
-    logErrorsToConsole: (err: NodeJS.ErrnoException, _req: Request, _res: Response, next: (args: any) => void) => {
+    logErrorsToConsole: (err: NodeJS.ErrnoException, _req: Request, res: Response, next: (args: any) => void) => {
         console.error(`Log Entry: ${JSON.stringify(errorHelper.errorBuilder(err))}`)
         console.error('*'.repeat(80));
-        next(err);
+        if (!res.headersSent) {
+            next(err);
+        }
     },
     clientErrorHandler: (err: NodeJS.ErrnoException, req: Request, res: Response, next: (args: any) => void) => {
         if (req.xhr) {
