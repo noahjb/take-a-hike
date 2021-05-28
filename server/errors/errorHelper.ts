@@ -1,5 +1,6 @@
-import { NotFoundError } from "../errors/NotFound";
+import { NotFoundError } from "./NotFoundError";
 import { Request, Response } from "express";
+import { ValidationError } from "./ValidationError";
 
 const errorHelper = {
     logErrorsToConsole: (err: NodeJS.ErrnoException, _req: Request, _res: Response, next: (args: any) => void) => {
@@ -29,7 +30,7 @@ const errorHelper = {
         res.status(errorResponse.status).json(errorResponse);
     },
     errorBuilder: (err: NodeJS.ErrnoException) => {
-        if (err instanceof NotFoundError) {
+        if (err instanceof NotFoundError || err instanceof ValidationError) {
             return {
                 status: err.status,
                 statusText: err.statusText,
