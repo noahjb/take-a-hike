@@ -3,7 +3,7 @@ import { ValidationReporter } from './ValidationReporter';
 
 const HikesValidator = {
     getHikeById: [
-        param('id').isUUID(),
+        param('id', 'Invalid ID format').isUUID(),
         ValidationReporter.run
     ]
 };
