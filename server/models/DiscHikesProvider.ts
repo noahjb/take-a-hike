@@ -1,4 +1,4 @@
-import { HikeNotFoundError } from '../errors/NotFound';
+import { HikeNotFoundError } from '../errors/NotFoundError';
 import * as fs from 'fs';
 import { IHike } from '../interfaces/IHike';
 import { IHikesProvider } from '../interfaces/IHikesProvider';

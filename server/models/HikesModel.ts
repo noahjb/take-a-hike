@@ -13,7 +13,7 @@ class HikesModel {
     }
 
     public getById(id: string) {
-        return this.hikesProvider.getById(id);
+        return this.hikesProvider.getById(id.toLowerCase());
     }
 };
 

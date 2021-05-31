@@ -3,5 +3,11 @@
 ### GET All Hikes
 GET {{hikesEndpoint}}
 
-### GET Hike by ID
-GET {{hikesEndpoint}}/9
+### GET Hike by ID (with VALID ID)
+GET {{hikesEndpoint}}/98e8ba44-1e9e-4257-9224-568dac25a838
+
+### GET Hike by ID (with INVALID ID)
+GET {{hikesEndpoint}}/98e8ba44-1e9e-4257-9224-111111111111
+
+### GET Hike by ID (with IMPROPERLY FORMATTED ID)
+GET {{hikesEndpoint}}/1234

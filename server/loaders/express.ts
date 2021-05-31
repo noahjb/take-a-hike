@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import routes from '../routes';
 import config from '../config';
-import { errorHelper } from '../helpers/errorHelper';
+import { errorHelper } from '../errors/errorHelper';
 
 export default async ({ app }: { app: express.Application }) => {
     app.set("port", process.env.PORT || 4000);

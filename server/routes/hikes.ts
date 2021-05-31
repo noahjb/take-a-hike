@@ -1,6 +1,7 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { IHikePayload } from '../interfaces/IHike';
 import HikesService from '../services/HikesService';
+import { HikesValidator } from '../errors/HikesValidator';
 const route = Router();
 
 export default (app: Router) => {
@@ -40,18 +41,21 @@ export default (app: Router) => {
   });
 
   // GET Single hike
-  route.get('/:id', (req: Request, res: Response, next) => {
-    new HikesService().getById(req.params.id)
-    .then((hike) => {
-      res.status(200).json({
-        status: 200,
-        statusText: 'OK',
-        message: `Found hike ${req.params.id}`,
-        data: hike
+  route.get('/:id',
+    HikesValidator.getHikeById,
+    (req: Request, res: Response, next: NextFunction) => {
+      new HikesService().getById(req.params.id)
+      .then((hike) => {
+        res.status(200).json({
+          status: 200,
+          statusText: 'OK',
+          message: `Found hike ${req.params.id}`,
+          data: hike
+        });
+      })
+      .catch(err => {
+        next(err);
       });
-    })
-    .catch(err => {
-      next(err);
-    });
-  });
+    }
+  );
 };

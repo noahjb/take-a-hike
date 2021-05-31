@@ -1,11 +1,14 @@
-import { NotFoundError } from "../errors/NotFound";
+import { NotFoundError } from "./NotFoundError";
 import { Request, Response } from "express";
+import { ValidationError } from "./ValidationError";
 
 const errorHelper = {
-    logErrorsToConsole: (err: NodeJS.ErrnoException, _req: Request, _res: Response, next: (args: any) => void) => {
+    logErrorsToConsole: (err: NodeJS.ErrnoException, _req: Request, res: Response, next: (args: any) => void) => {
         console.error(`Log Entry: ${JSON.stringify(errorHelper.errorBuilder(err))}`)
         console.error('*'.repeat(80));
-        next(err);
+        if (!res.headersSent) {
+            next(err);
+        }
     },
     clientErrorHandler: (err: NodeJS.ErrnoException, req: Request, res: Response, next: (args: any) => void) => {
         if (req.xhr) {
@@ -29,7 +32,7 @@ const errorHelper = {
         res.status(errorResponse.status).json(errorResponse);
     },
     errorBuilder: (err: NodeJS.ErrnoException) => {
-        if (err instanceof NotFoundError) {
+        if (err instanceof NotFoundError || err instanceof ValidationError) {
             return {
                 status: err.status,
                 statusText: err.statusText,
