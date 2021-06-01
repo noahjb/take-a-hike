@@ -11,8 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: Install root dependencies
         run: yarn
+      - name: Install server dependencies
+        run: cd server && yarn
+      - name: Install client dependencies
+        run: cd client && yarn
       - name: Lint
         run: yarn lint
   build:
