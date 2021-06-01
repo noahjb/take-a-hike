@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"eslint.packageManager": "yarn",
+		"eslint.run": "onSave",
+		"prettier.singleQuote": true,
+		"prettier.useTabs": true,
+		"prettier.trailingComma": "none",
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": true
+		},
+		"eslint.alwaysShowStatus": true,
+		"files.autoSave": "onFocusChange",
+		"editor.tabSize": 2,
+		"editor.tabCompletion": "on",
+		"editor.insertSpaces": false
+	}
+}
