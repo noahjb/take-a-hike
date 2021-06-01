@@ -1,10 +1,8 @@
-import { IHike } from "./IHike";
+import { IHike } from './IHike';
 
 interface IHikesProvider {
-    get: () => Promise<IHike[]>;
-    getById: (id: string) => Promise<IHike>;
+  get: () => Promise<IHike[]>;
+  getById: (id: string) => Promise<IHike>;
 }
 
-export {
-    IHikesProvider
-};
+export default IHikesProvider;

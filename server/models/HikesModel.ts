@@ -1,22 +1,20 @@
-import { IHikesProvider } from '../interfaces/IHikesProvider';
-import { DiscHikesProvider } from './DiscHikesProvider';
+import IHikesProvider from '../interfaces/IHikesProvider';
+import DiscHikesProvider from './DiscHikesProvider';
 
 class HikesModel {
-    private hikesProvider: IHikesProvider;
+  private hikesProvider: IHikesProvider;
 
-    constructor(provider?: IHikesProvider) {
-        this.hikesProvider = (provider) ? provider : DiscHikesProvider;
-    }
+  constructor(provider?: IHikesProvider) {
+    this.hikesProvider = provider || DiscHikesProvider;
+  }
 
-    public get() {
-        return this.hikesProvider.get();
-    }
+  public get() {
+    return this.hikesProvider.get();
+  }
 
-    public getById(id: string) {
-        return this.hikesProvider.getById(id.toLowerCase());
-    }
-};
+  public getById(id: string) {
+    return this.hikesProvider.getById(id.toLowerCase());
+  }
+}
 
-export {
-    HikesModel
-};
+export default HikesModel;

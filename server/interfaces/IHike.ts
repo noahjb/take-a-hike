@@ -1,13 +1,10 @@
 interface IHikePayload {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 }
 
 interface IHike extends IHikePayload {
-    id: string;
-};
+  id: string;
+}
 
-export {
-    IHike,
-    IHikePayload
-};
+export { IHike, IHikePayload };

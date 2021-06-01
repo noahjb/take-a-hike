@@ -1,4 +1,6 @@
-@hikesEndpoint = http://localhost:4000/api/hikes
+@remoteHikesEndpoint = https://take-a-hike-pal.herokuapp.com/api/hikes
+@localHikesEndpoint = http://localhost:4000/api/hikes
+@hikesEndpoint = {{localHikesEndpoint}}
 
 ### GET All Hikes
 GET {{hikesEndpoint}}
