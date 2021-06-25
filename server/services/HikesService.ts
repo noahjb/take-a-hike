@@ -33,7 +33,7 @@ export default class HikesService {
     const hikeResult = {
       id: '12345',
       title: hike.title,
-      description: 'This is not a real hike - just a dummy'
+      description: hike.description
     };
     return Promise.resolve(hikeResult);
   }
