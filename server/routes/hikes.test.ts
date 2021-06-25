@@ -1,5 +1,5 @@
 import express from 'express';
-import request from 'supertest';
+import request, { SuperTest } from 'supertest';
 import errorHelper from '../errors/errorHelper';
 import { IHike, IHikePayload } from '../interfaces/IHike';
 import hikes from './hikes';
@@ -31,7 +31,7 @@ jest.mock('../errors/HikesValidator', () => ({
   getHikeById: []
 }));
 
-let req: any;
+let req: SuperTest<request.Test>;
 describe('hikes routes', () => {
   beforeAll(() => {
     const dummyApp = express();

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { IHike } from 'interfaces/IHike';
+import { IHike } from '../interfaces/IHike';
 import { HikeNotFoundError } from '../errors/NotFoundError';
 import DiscHikesProvider from './DiscHikesProvider';
 import * as hikesJson from './hikes.json';
