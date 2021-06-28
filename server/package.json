@@ -7,7 +7,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "ts-node --transpile-only ./index.ts",
     "start:dev": "nodemon",
-    "test": "jest --coverage"
+    "test": "jest --coverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",
