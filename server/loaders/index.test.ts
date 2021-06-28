@@ -5,9 +5,9 @@ import expressLoader from './express';
 jest.mock('./express');
 
 describe('Main loader', () => {
-  afterAll((done) => {
-    done();
-  });
+  // afterAll((done) => {
+  //   done();
+  // });
 
   it('should load all loaders', async () => {
     const dummyApp = express();

@@ -5,9 +5,9 @@ import DiscHikesProvider from './DiscHikesProvider';
 import * as hikesJson from './hikes.json';
 
 describe('DiscHikesProvider', () => {
-  afterAll((done) => {
-    done();
-  });
+  // afterAll((done) => {
+  //   done();
+  // });
 
   describe('get', () => {
     it('should result in an array of hikes', async () => {

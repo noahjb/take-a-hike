@@ -41,9 +41,9 @@ describe('hikes routes', () => {
     req = request(dummyApp);
   });
 
-  afterAll((done) => {
-    done();
-  });
+  // afterAll((done) => {
+  //   done();
+  // });
 
   describe('get', () => {
     it('should respond with a 200 and an array of hikes when successful', async () => {
