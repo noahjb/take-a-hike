@@ -1,14 +1,7 @@
 import express from 'express';
-import loaders from './loaders';
+import start from './start';
 
-async function startServer() {
-  const app = express();
-
-  await loaders({ expressApp: app });
-  app.listen(app.get('port'), () => {
-    // eslint-disable-next-line no-console
-    console.log(`Server listening on port ${app.get('port')}`);
-  });
-}
-
-startServer();
+start(express()).then(() => {
+  // eslint-disable-next-line no-console
+  console.log('Server up and running...');
+});

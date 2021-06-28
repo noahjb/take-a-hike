@@ -9,7 +9,8 @@
         "lib": ["es6"],
         "allowJs": true,
         "forceConsistentCasingInFileNames": true,
-        "strict": true
+        "strict": true,
+        "resolveJsonModule": true
     },
     "include": [
         "**/**.ts",
