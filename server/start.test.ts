@@ -16,10 +16,6 @@ describe('start', () => {
     (loaders as jest.Mock).mockClear();
   });
 
-  // afterAll((done) => {
-  //   done();
-  // });
-
   it('should start the server correctly', async () => {
     // Trick TypeScript into thinking this is a full express app,
     // since we only need a couple methods for the test

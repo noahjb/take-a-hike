@@ -6,9 +6,8 @@ import loader from './express';
 import errorHelper from '../errors/errorHelper';
 
 describe('express loader', () => {
-  afterAll((/* done */) => {
+  afterAll(() => {
     jest.restoreAllMocks();
-    // done();
   });
 
   it('load and setup express correctly', async () => {
