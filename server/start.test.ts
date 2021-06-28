@@ -1,6 +1,6 @@
 import express from 'express';
 import loaders from './loaders';
-import startServer from './index';
+import start from './start';
 
 jest.mock('./loaders');
 
@@ -11,7 +11,7 @@ const mockApp = {
   listen: listenMock
 };
 
-describe('startServer', () => {
+describe('start', () => {
   beforeEach(() => {
     (loaders as jest.Mock).mockClear();
   });
@@ -23,7 +23,7 @@ describe('startServer', () => {
   it('should start the server correctly', async () => {
     // Trick TypeScript into thinking this is a full express app,
     // since we only need a couple methods for the test
-    await startServer(mockApp as unknown as express.Application);
+    await start(mockApp as unknown as express.Application);
     expect(loaders).toHaveBeenCalledWith({ expressApp: mockApp });
     expect(listenMock).toHaveBeenCalledWith(dummyPort);
   });

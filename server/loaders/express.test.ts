@@ -11,7 +11,7 @@ describe('express loader', () => {
     done();
   });
 
-  it('load and setup express correctly', () => {
+  it('load and setup express correctly', async () => {
     const app = express();
     const setMock = jest.fn();
     const useMock = jest.fn();
@@ -25,7 +25,7 @@ describe('express loader', () => {
     const clientErrorHandlerSpy = jest.spyOn(errorHelper, 'clientErrorHandler');
     const errorHandlerSpy = jest.spyOn(errorHelper, 'errorHandler');
     const getSpy = jest.spyOn(app, 'get');
-    loader({ app });
+    await loader({ app });
     expect(setMock).toHaveBeenCalledWith('port', 4000);
     expect(useMock.mock.calls[0][0]).toContain('/client/build');
     expect(useMock).toHaveBeenNthCalledWith(2, '/api', expect.any(Function));
