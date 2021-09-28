@@ -1,33 +1,45 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CreateHikeButton from './components/CreateHikeButton';
+import Header from './components/Header';
+import Hikes from './components/Hikes';
+import Homepage from './components/Homepage';
+import MainContent from './components/MainContent';
+import NavLinks from './components/NavLinks';
+import Notifications from './components/Notifications';
+import Profile from './components/Profile';
+import SiteLogo from './components/SiteLogo';
+import NewHike from './components/NewHike';
 
 function App() {
-  let [msg, setMsg] = useState('Loading');
-  
-  fetch('/api/hikes')
-  .then(async res => {
-    const response = await res.json();
-    setMsg(response.data[0].title);
-  });
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          {msg}
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Header>
+          <SiteLogo />
+          <NavLinks />
+          <CreateHikeButton />
+          <Notifications />
+          <Profile />
+        </Header>
+        <Homepage
+          mainContent={
+            <MainContent>
+              <Switch>
+                <Route path='/create'>
+                  <NewHike />
+                </Route>
+                <Route path='/profile'>
+                  <h2>Profile</h2>
+                </Route>
+                <Route path='/'>
+                  <Hikes />
+                </Route>
+              </Switch>
+            </MainContent>
+          }
+          />
+      </div>
+    </Router>
   );
 }
 
