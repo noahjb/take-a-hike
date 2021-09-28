@@ -25,7 +25,7 @@ const Hikes: React.FC = () => {
 
     return (
         <div>
-            {hikes.map(hike => <Hike hike={hike} />)}
+            {hikes.map(hike => <Hike key={hike.id} hike={hike} />)}
         </div>
     );
 };
